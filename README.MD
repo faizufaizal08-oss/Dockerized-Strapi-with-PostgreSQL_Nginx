@@ -1,24 +1,63 @@
-Dockerized Strapi Application with PostgreSQL and Nginx
+# Strapi Application – Dockerized Setup (PostgreSQL + Nginx)
 
-Description:
-This pull request adds a fully Dockerized Strapi application integrated with PostgreSQL as the database and Nginx as a reverse proxy. The setup allows for seamless local development, testing, and deployment with minimal configuration.
+This repository contains a fully Dockerized **Strapi v4** application using:
+- **PostgreSQL** as the database
+- **Nginx** as a reverse proxy
+- **Docker Compose** for orchestration
 
-Strapi Application
-Dockerized Strapi backend.
-Configured environment variables for database connection, admin path, and telemetry settings.
-Includes automated admin panel build during container startup.
+The setup is suitable for **local development** and easily extendable for **production**.
 
-PostgreSQL Database
-Dockerized PostgreSQL container.
-Persistent volume setup for data storage.
-Environment variables for user, password, and database configuration.
+---
 
-Nginx Reverse Proxy
-Dockerized Nginx setup as a reverse proxy for Strapi.
-Configured to route / and /admin requests to the Strapi container.
-Handles connection errors gracefully with proper upstream configuration.
+## 📂 Project Structure
 
-Docker Compose Setup
-Multi-container orchestration for Strapi, PostgreSQL, and Nginx.
-Ensures proper startup order with dependency management (depends_on).
-Ready-to-use docker-compose.override.yml for local development.
+TASK2_FEB10-docker/
+│
+├── docker-compose.yml
+│
+├── nginx/
+│   └── nginx.conf
+│
+└── strapi/
+    ├── Dockerfile
+    ├── .dockerignore       
+    ├── config/
+    │   └── server.js
+
+
+---
+
+## ⚙️ Services
+
+### 1️⃣ Strapi
+- Node.js 20 (required for Strapi)
+- Strapi v4 created inside the container
+- PostgreSQL driver (`pg`) installed explicitly
+
+### 2️⃣ PostgreSQL
+- Image: `postgres:15`
+- Persistent data using Docker volumes
+
+### 3️⃣ Nginx
+- Acts as a reverse proxy
+- Routes traffic to Strapi on port `1337`
+
+---
+
+## 🐳 Docker Compose Configuration
+
+### Networks
+- Custom bridge network: `strapi-net`
+
+### Volumes
+- `postgres-data` for database persistence
+
+---
+
+## 🚀 How to Run the Project
+
+    docker compose down -v
+    docker system prune -f
+    
+    docker compose build --no-cache
+    docker compose up
